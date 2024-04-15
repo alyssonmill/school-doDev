@@ -2,17 +2,50 @@
 ////////////////// FAÇA O SEU CÓDIGO AQUI \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ////////////////////////////////////////////////////////////////////////
 
-class Aluno {
-  
+// rie uma classe "Aluno" com as propriedades: Nome, Idade e Nota;
+
+
+// Crie um construtor que preencha as 3 propriedades;
+
+
+// Crie um array para armazenar os Alunos cadastrados;
+
+
+// Crie uma função "CadastrarAluno()" que recebe três parâmetros: nome, idade e nota. 
+// Nesta função crie um novo objeto de aluno com as informações  recebidas via 
+// parâmetro, adicione esse objeto ao array de alunos e retorne o objeto Aluno. 
+// Antes de salvar no array, 
+// valide se já não existe um objeto com o mesmo Nome, para evitar duplicidade.
+
+class Student {
+  name
+  age
+  score
+
+  constructor(name,age,score){
+    this.name = name;
+    this.age = age;
+    this.score = score;
+  }
 }
 
 // Array
+let students = [];
 
+//Project functions
 
-//funções projeto
+function CadastrarAluno(name,age,score) {
+  const student1 = new Student(name,age,score)
 
-function CadastrarAluno() {
-  
+  if (students.includes(student1)) {
+    alert("You add the same student")
+  }else {
+    students.push(student1);
+  }
+
+  students.push(student1);
+
+  return Student;
 }
 
 function OrdenarPorNota() {
