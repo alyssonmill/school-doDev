@@ -1,28 +1,5 @@
-////////////////////////////////////////////////////////////////////////
-////////////////// FAÇA O SEU CÓDIGO AQUI \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-////////////////////////////////////////////////////////////////////////
-
-// rie uma classe "Aluno" com as propriedades: Nome, Idade e Nota;
-
-
-// Crie um construtor que preencha as 3 propriedades;
-
-
-// Crie um array para armazenar os Alunos cadastrados;
-
-
-// Crie uma função "CadastrarAluno()" que recebe três parâmetros: nome, idade e nota. 
-// Nesta função crie um novo objeto de aluno com as informações  recebidas via 
-// parâmetro, adicione esse objeto ao array de alunos e retorne o objeto Aluno. 
-// Antes de salvar no array, 
-// valide se já não existe um objeto com o mesmo Nome, para evitar duplicidade.
-
 class Student {
-  name
-  age
-  score
-
-  constructor(name,age,score){
+  constructor(name, age, score) {
     this.name = name;
     this.age = age;
     this.score = score;
@@ -32,72 +9,95 @@ class Student {
 // Array
 let students = [];
 
-//Project functions
+// Project functions
 
-function CadastrarAluno(name,age,score) {
-  const student1 = new Student(name,age,score)
+function registerStudent(name, age, score) {
+  const student = new Student(name, age, score);
 
-  if (students.includes(student1)) {
-    alert("You add the same student")
-  }else {
-    students.push(student1);
+  if (students.includes(student)) {
+    alert("You cannot add the same student");
+  } else {
+    students.push(student);
+    alert("You have added a new student");
   }
-
-  students.push(student1);
 
   return Student;
 }
 
-function OrdenarPorNota() {
- 
+function sortByScore(students) {
+  students.sort((a, b) => b.score - a.score);
+  students.reverse();
+  return students;
 }
 
-function OrdenarPorIdade() {
-
+function sortByAge() {
+  students.sort((a, b) => b.age - a.age);
+  return students;
 }
 
-function OrdenarPorNome() {
+function sortByName(students) {
+  return students.sort((a, b) => {
+    const nameA = a.name.toLowerCase();
+    const nameB = b.name.toLowerCase();
 
-}
-
-function CalcularMedia(){
-
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-function ExcluirAluno(array, nome) {
-  let index
-  let removido = false
-  array.forEach(aluno => {
-    if (aluno.Nome == nome) {
-      index = array.indexOf(aluno)
-      removido = true
+    if (nameA < nameB) {
+      return -1;
     }
-  })
-  array.splice(index, 1)
-  return removido
-}
 
-function PesquisarAluno(array, nome) {
-  let pesquisa = false
-  array.forEach(aluno => {
-    if (aluno.Nome.includes(nome)) {
-      pesquisa = true
+    if (nameA > nameB) {
+      return 1;
     }
-  })
-
-  return pesquisa
+  });
 }
 
-// Seleção de elementos
-const alunoForm = document.querySelector("#aluno-form");
-const alunoInput = document.querySelector("#aluno-input");
-const alunoInput2 = document.querySelector("#aluno-input-2");
-const alunoInput3 = document.querySelector("#aluno-input-3");
-const alunoList = document.querySelector("#aluno-list");
+function calculateAverage(students) {
+  if (students.length === 0) {
+    return 0;
+  }
+  let sumScores = 0;
+
+  students.forEach(student => {
+    sumScores += Number(student.score);
+  });
+
+  const average = sumScores / students.length;
+  return average;
+}
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+function removeStudent(array, name) {
+  let index;
+  let removed = false;
+  array.forEach(student => {
+    if (student.name == name) {
+      index = array.indexOf(student);
+      removed = true;
+    }
+  });
+  array.splice(index, 1);
+  return removed;
+}
+
+function searchStudent(array, name) {
+  let searchResult = false;
+  array.forEach(student => {
+    if (student.name.includes(name)) {
+      searchResult = true;
+    }
+  });
+
+  return searchResult;
+}
+
+// Selecting elements
+const studentForm = document.querySelector("#student-form");
+const studentInput = document.querySelector("#student-input");
+const studentInput2 = document.querySelector("#student-input-2");
+const studentInput3 = document.querySelector("#student-input-3");
+const studentList = document.querySelector("#student-list");
 const editForm = document.querySelector("#edit-form");
 const editInput = document.querySelector("#edit-input");
 const cancelEditBtn = document.querySelector("#cancel-edit-btn");
@@ -107,96 +107,90 @@ const filterBtn = document.querySelector("#filter-select");
 
 let oldInputValue;
 
-// Funções
-const saveAluno = (nome, idade, nota, done = 0, save = 1) => {
-  let objetoAluno = CadastrarAluno(nome, idade, nota, arrayAlunos)
+// Functions
+const saveStudent = (name, age, score, done = 0, save = 1) => {
+  let studentObject = registerStudent(name, age, score, students);
 
-  const aluno = document.createElement("div");
-  aluno.classList.add("aluno");
+  const student = document.createElement("div");
+  student.classList.add("student");
 
-  const alunoNome = document.createElement("h3");
-  alunoNome.innerText = objetoAluno.Nome;
-  aluno.appendChild(alunoNome);
+  const studentName = document.createElement("h3");
+  studentName.innerText = studentObject.Name;
+  student.appendChild(studentName);
 
-  const alunoIdade = document.createElement("h3");
-  alunoIdade.innerText = objetoAluno.Idade;
-  aluno.appendChild(alunoIdade);
+  const studentAge = document.createElement("h3");
+  studentAge.innerText = studentObject.Age;
+  student.appendChild(studentAge);
 
-  const alunoNota = document.createElement("h3");
-  alunoNota.innerText = objetoAluno.Nota;
-  aluno.appendChild(alunoNota);
+  const studentScore = document.createElement("h3");
+  studentScore.innerText = studentObject.Score;
+  student.appendChild(studentScore);
 
   const deleteBtn = document.createElement("button");
-  deleteBtn.classList.add("remove-aluno");
+  deleteBtn.classList.add("remove-student");
   deleteBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-  aluno.appendChild(deleteBtn);
+  student.appendChild(deleteBtn);
 
-  // Utilizando dados da localStorage
+  studentList.appendChild(student);
 
-  alunoList.appendChild(aluno);
-  
+  const average = document.querySelector("#average");
+  average.textContent = calculateAverage(students).toFixed(2);
 
-  const media = document.querySelector("#media");
-  media.textContent = CalcularMedia(arrayAlunos).toFixed(2)
-
-  alunoInput.value = "";
-  alunoInput2.value = "";
-  alunoInput3.value = "";
-
+  studentInput.value = "";
+  studentInput2.value = "";
+  studentInput3.value = "";
 };
 
 const toggleForms = () => {
   editForm.classList.toggle("hide");
-  alunoForm.classList.toggle("hide");
-  alunoList.classList.toggle("hide");
+  studentForm.classList.toggle("hide");
+  studentList.classList.toggle("hide");
 };
 
-const getBuscarAluno = (busca) => {
-  const alunos = document.querySelectorAll(".aluno");
+const getSearchStudent = (search) => {
+  const students = document.querySelectorAll(".student");
 
-  let pesquisa = PesquisarAluno(arrayAlunos, busca)
+  let searchResult = searchStudent(students, search);
 
-  if (pesquisa) {
-    alunos.forEach((aluno) => {
-      const alunoNome = aluno.querySelector("h3").innerText.toLowerCase();
+  if (searchResult) {
+    students.forEach((student) => {
+      const studentName = student.querySelector("h3").innerText.toLowerCase();
 
-      aluno.style.display = "flex";
+      student.style.display = "flex";
 
-      if (!alunoNome.includes(busca)) {
-        aluno.style.display = "none";
+      if (!studentName.includes(search)) {
+        student.style.display = "none";
       }
     });
   };
 }
 
-
-
-const filterAlunos = (filterValue) => {
-  const alunos = document.querySelectorAll(".aluno");
+const filterStudents = (filterValue) => {
+  const students = document.querySelectorAll(".student");
 
   switch (filterValue) {
-    case "nota":
-      alunos.forEach((aluno) => {
-        aluno.remove()
+    case "score":
+      students.forEach((student) => {
+        student.remove();
       })
-      arrayAlunos = OrdenarPorNota(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+      students = sortByScore(students);
+      students.forEach((student) => saveStudent(student.name, student.age, student.score, done = 0, save = 1));
       break;
 
-    case "idade":
-      alunos.forEach((aluno) => {
-        aluno.remove()
+    case "age":
+      students.forEach((student) => {
+        student.remove();
       })
-      arrayAlunos = OrdenarPorIdade(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+      students = sortByAge(students);
+      students.forEach((student) => saveStudent(student.name, student.age, student.score, done = 0, save = 1));
       break;
 
-    case "nome":
-      alunos.forEach((aluno) => {
-        aluno.remove()
+    case "name":
+      students.forEach((student) => {
+        student.remove();
       })
-      arrayAlunos = OrdenarPorNome(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+      students = sortByName(students);
+      students.forEach((student) => saveStudent(student.name, student.age, student.score, done = 0, save = 1));
       break;
 
     default:
@@ -204,45 +198,41 @@ const filterAlunos = (filterValue) => {
   }
 };
 
-// Eventos
-alunoForm.addEventListener("submit", (e) => {
+// Events
+studentForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const inputValue = alunoInput.value;
-  const inputValue2 = alunoInput2.value;
-  const inputValue3 = alunoInput3.value;
+  const inputValue = studentInput.value;
+  const inputValue2 = studentInput2.value;
+  const inputValue3 = studentInput3.value;
 
   if (inputValue && inputValue2 && inputValue3) {
-    saveAluno(inputValue, inputValue2, inputValue3);
+    saveStudent(inputValue, inputValue2, inputValue3);
   }
 });
 
 document.addEventListener("click", (e) => {
   const targetEl = e.target;
   const parentEl = targetEl.closest("div");
-  let alunoTitle;
+  let studentName;
 
   if (parentEl && parentEl.querySelector("h3")) {
-    alunoTitle = parentEl.querySelector("h3").innerText || "";
+    studentName = parentEl.querySelector("h3").innerText || "";
   }
 
-  if (targetEl.classList.contains("remove-aluno")) {
-    alunoTitle = parentEl.querySelector("h3").innerText
-    let removido = ExcluirAluno(arrayAlunos, alunoTitle)
-    if (removido) {
+  if (targetEl.classList.contains("remove-student")) {
+    studentName = parentEl.querySelector("h3").innerText
+    let removed = removeStudent(students, studentName)
+    if (removed) {
       parentEl.remove();
-
-      // Utilizando dados da localStorage
-
     }
-
   }
 });
 
 searchInput.addEventListener("keyup", (e) => {
-  const busca = e.target.value;
+  const search = e.target.value;
 
-  getBuscarAluno(busca);
+  getSearchStudent(search);
 });
 
 eraseBtn.addEventListener("click", (e) => {
@@ -256,16 +246,16 @@ eraseBtn.addEventListener("click", (e) => {
 filterBtn.addEventListener("change", (e) => {
   const filterValue = e.target.value;
 
-  filterAlunos(filterValue);
+  filterStudents(filterValue);
 });
 
 // Local Storage
 
-// const loadAlunos = () => {
+// const loadStudents = () => {
 
-//   arrayAlunos.forEach((aluno) => {
-//     saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, 0);
+//   students.forEach((student) => {
+//     saveStudent(student.name, student.age, student.score, 0);
 //   });
 // };
 
-// loadAlunos();
+// loadStudents();
